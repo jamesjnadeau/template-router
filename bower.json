@@ -1,25 +1,27 @@
 {
-  "name": "seed-element",
-  "version": "0.0.0",
+  "name": "template-router",
+  "version": "0.0.1",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "James Nadeau <james.nadeau@gmail.com>"
   ],
-  "description": "Element providing solution to no problem in particular.",
+  "description": "Element providing a simple, opinionated routing system for polymer based apps.",
   "keywords": [
     "web-component",
     "web-components",
     "polymer",
-    "seed"
+    "route"
   ],
-  "main": "seed-element.html",
+  "main": "template-router.html",
   "license": "MIT",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/jamesjnadeau/template-route/",
   "ignore": [
     "/.*",
     "/tests/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.2"
+    "polymer": "Polymer/polymer#^0.5.2",
+    "history.js": "~1.8.0",
+    "history": "~1.8.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.5"

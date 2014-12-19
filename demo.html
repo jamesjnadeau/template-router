@@ -13,17 +13,60 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>seed-element Demo</title>
 
-  <script src="../webcomponentsjs/webcomponents.min.js"></script>
-  <link rel="import" href="seed-element.html">
+  <script src="/vendor/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="/vendor/polymer/polymer.html">
+  <link rel="import" href="template-router.html">
 
 </head>
 <body unresolved>
 
   <p>An example of using <code>&lt;seed-element&gt;</code>:</p>
+	<polymer-element name="app-main" attributes="">
+		<template>
+			<template-router id="router" init="auto" mode="pushstate">
+			<template-route path="/auth" template>
+				<template >
+					<h3>Login Page</h3>
+					<a href="/" >Home</a>
+					<a href="/user/test" >test user</a>
+				</template>
+			</template-route>
 
-  <seed-element>
-    <h2>Hello seed-element</h2>
-  </seed-element>
+			<template-route path="/user/:uid" template>
+				<template >
+					<h3>User Page</h3>
+					<h3>{{uid}}</h3>
+					<a href="/" >Home</a>
+					<a href="/auth" >Login</a>
+				</template>
+			</template-route>
 
+			<!-- matches everything else -->
+			<template-route path="*" template >
+				<template>
+					<h3>Home Page {{pages_viewed}}</h3>
+					<a href="/user/test" >test user</a>
+					<a href="/auth" >Login</a>
+				</template>
+			</template-route>
+		</template-router>
+		</template>
+		<script>
+			(function() {
+				Polymer({
+					ready: function() {
+						this.pages_viewed = 0;
+					},
+					domReady: function() {
+						
+					},
+					observe: {
+						
+					},
+				});
+			})();
+		</script>
+	</polymer-element>
+	<app-main></app-main>
 </body>
 </html>

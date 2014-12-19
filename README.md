@@ -1,7 +1,7 @@
-seed-element
+template-router
 ============
 
-See the [component page](http://polymerlabs.github.io/seed-element) for more information.
+See the [component page](http://jamesjnadeau.github.io/template-router) for more information.
 
 ## Getting Started
 
