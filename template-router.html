@@ -1,17 +1,16 @@
 <script src="../history.js/scripts/bundled/html5/native.history.js"></script>
 <script>
-	// @license Copyright (C) 2014 Erik Ringsmuth - MIT license
 	(function(window, document) {
 		var utilities = {};
 		var importedURIs = {};
 		var isIE = 'ActiveXObject' in window;
 		var previousUrl = {};
 
-		// <template-router [init="auto|manual"] [mode="auto|hash|pushstate"] [trailingSlash="strict|ignore"] [shadow]></template-router>
+		// <template-router [init="auto|manual"] [trailingSlash="strict|ignore"] ></template-router>
 		var TemplateRouter = Object.create(HTMLElement.prototype);
 		TemplateRouter.util = utilities;
 
-		// <template-route path="/path" [import="/page/cust-el.html"] [element="cust-el"] [template]></template-route>
+		// <template-route path="/path" ></template-route>
 		document.registerElement('template-route', {
 			prototype: Object.create(HTMLElement.prototype)
 		});
@@ -83,25 +82,15 @@
 					transitionAnimationEnd(router.previousRoute);
 				});
 			}
-/*
-			// listen for URL change events
-			router.stateChangeHandler = stateChange.bind(null, router);
-			window.addEventListener('popstate', router.stateChangeHandler, false);
-			if (isIE) {
-				// IE bug. A hashchange is supposed to trigger a popstate event, making popstate the only event you
-				// need to listen to. That's not the case in IE so we make another event listener for it.
-				window.addEventListener('hashchange', router.stateChangeHandler, false);
-			}
-*/
-			var handleStateChange = function() { // Note: We are using statechange instead of popstate
+
+			var handleStateChange = function() { 
 				var State = History.getState(),
 				url = utilities.parseUrl(State.url, router.getAttribute('mode'));
-				
+
 				var route = router.firstElementChild;
 				while (route) {
 					if (route.tagName === 'TEMPLATE-ROUTE') {
 						if(utilities.testRoute(route.getAttribute('path'), url.path, router.getAttribute('trailingSlash'), route.hasAttribute('regex'))) {
-							//activateRoute(router, route, url);
 							if (router.previousRoute && router.previousRoute.transitionAnimationInProgress) {
 								transitionAnimationEnd(router.previousRoute);
 							}
@@ -116,30 +105,14 @@
 								route: route,
 								oldRoute: router.activeRoute
 							};
-							//activeTemplate(router, route.firstElementChild, route, url, eventDetail);
-							////console.log(template.templateInstance);
 							var template = route.firstElementChild;
-							/*var model = createModel(router, route, url, eventDetail);
-							var routeArgs = utilities.routeArguments(route.getAttribute('path'), url.path, url.search, route.hasAttribute('regex'));
-							for (var arg in routeArgs) {
-								if (routeArgs.hasOwnProperty(arg)) {
-									model[arg] = routeArgs[arg];
-								}
-							}*/
 							var model = utilities.routeArguments(route.getAttribute('path'), url.path, url.search, route.hasAttribute('regex'), router.getAttribute('typecast') === 'auto');
 							if (route.hasAttribute('bindRouter') || router.hasAttribute('bindRouter')) {
 								model.router = router;
 							}
-							var templateInstance = template.createInstance(route.templateInstance.model);
 
-							//activeElement(router, templateInstance, url, eventDetail);
-							//activeElement(router, element, url, eventDetail)
-							//
-							// core-animated-pages temporarily needs the old and new route in the DOM at the same time to animate the transition,
-							// otherwise we can remove the old route's content right away.
-							// UNLESS
-							// if the route we're navigating to matches the same template-route (ex: path="/article/:id" navigating from /article/0 to
-							// /article/1), then we have to simply replace the route's content instead of animating a transition.
+							//bind template model
+							var templateInstance = template.createInstance(route.templateInstance.model);
 							if (!router.hasAttribute('core-animated-pages') || eventDetail.route === eventDetail.oldRoute) {
 								removeRouteContent(router.previousRoute);
 							}
@@ -147,7 +120,7 @@
 							// add the new content
 							router.activeRoute.appendChild(templateInstance);
 
-							//overwrite all a link events
+							//overwrite all <a/> link events
 							var links = router.activeRoute.querySelectorAll('a');
 							for (var i = 0; i < links.length; i++) {
 								links[i].addEventListener('click', function(event) {
