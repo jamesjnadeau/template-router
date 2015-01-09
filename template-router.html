@@ -130,8 +130,7 @@
 							if (route.hasAttribute('bindRouter') || router.hasAttribute('bindRouter')) {
 								model.router = router;
 							}
-							console.log('model', router.model);
-							var templateInstance = template.createInstance(model);
+							var templateInstance = template.createInstance(route.templateInstance.model);
 
 							//activeElement(router, templateInstance, url, eventDetail);
 							//activeElement(router, element, url, eventDetail)
