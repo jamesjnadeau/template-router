@@ -111,8 +111,9 @@
 								model.router = router;
 							}
 
+							model = utilities.extend(model, route.templateInstance.model);
 							//bind template model
-							var templateInstance = template.createInstance(route.templateInstance.model);
+							var templateInstance = template.createInstance(model);
 							if (!router.hasAttribute('core-animated-pages') || eventDetail.route === eventDetail.oldRoute) {
 								removeRouteContent(router.previousRoute);
 							}
@@ -423,6 +424,22 @@
 			}
 
 			return args;
+		};
+
+		utilities.extend = function(out) {
+			out = out || {};
+
+			for (var i = 1; i < arguments.length; i++) {
+				if (!arguments[i])
+					continue;
+
+				for (var key in arguments[i]) {
+					if (arguments[i].hasOwnProperty(key))
+						out[key] = arguments[i][key];
+				}
+			}
+
+			return out;
 		};
 
 		// typecast(value) - Typecast the string value to an unescaped string, number, or boolean
